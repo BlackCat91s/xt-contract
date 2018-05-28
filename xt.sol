@@ -3,7 +3,6 @@ pragma solidity ^0.4.18;
 // ----------------------------------------------------------------------------
 // XT token contract
 //
-// Deployed to : 0x673C7E48b5B21256FB2122Bc3F10d4be1ef9b352
 // Symbol      : XT
 // Name        : X Token
 // Total supply: 1000000000
@@ -115,8 +114,8 @@ contract XToken is ERC20Interface, Owned, SafeMath {
         name = "X Token";
         decimals = 18;
         _totalSupply = 1000000000 * 10**uint(decimals);
-        balances[0x673C7E48b5B21256FB2122Bc3F10d4be1ef9b352] = _totalSupply;
-        Transfer(address(0), 0x673C7E48b5B21256FB2122Bc3F10d4be1ef9b352, _totalSupply);
+        balances[owner] = _totalSupply;
+        Transfer(address(0), owner, _totalSupply);
     }
 
 
