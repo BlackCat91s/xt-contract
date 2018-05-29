@@ -51,6 +51,7 @@ contract ERC20Interface {
 
     event Transfer(address indexed from, address indexed to, uint tokens);
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
+    event Burn(address indexed burner, uint tokens);
 }
 
 
@@ -98,7 +99,7 @@ contract Owned {
 // ----------------------------------------------------------------------------
 contract XToken is ERC20Interface, Owned, SafeMath {
     string public symbol;
-    string public  name;
+    string public name;
     uint8 public decimals;
     uint public _totalSupply;
 
@@ -116,14 +117,6 @@ contract XToken is ERC20Interface, Owned, SafeMath {
         _totalSupply = 1000000000 * 10**uint(decimals);
         balances[owner] = _totalSupply;
         Transfer(address(0), owner, _totalSupply);
-    }
-
-
-    // ------------------------------------------------------------------------
-    // Total supply
-    // ------------------------------------------------------------------------
-    function totalSupply() public constant returns (uint) {
-        return _totalSupply  - balances[address(0)];
     }
 
 
@@ -210,6 +203,19 @@ contract XToken is ERC20Interface, Owned, SafeMath {
         revert();
     }
 
+    // ------------------------------------------------------------------------
+    // Burn function
+    // Owner can burn tokens = send tokens to address(0) 
+    // and decrease total supply
+    // ------------------------------------------------------------------------
+    function burn(uint tokens) public onlyOwner returns (bool success) {
+        require(balances[msg.sender] >= tokens);
+        balances[msg.sender] = safeSub(balances[msg.sender], tokens);
+        _totalSupply = safeSub(_totalSupply, tokens);
+        Burn(msg.sender, tokens);
+        Transfer(msg.sender, address(0), tokens);
+        return true;
+    }
 
     // ------------------------------------------------------------------------
     // Owner can transfer out any accidentally sent ERC20 tokens
