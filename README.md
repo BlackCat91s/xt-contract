@@ -3,6 +3,8 @@ This repo contains the solidity file for XT, WCX's native crypto token.
     xt.sol
 
 
+Etherscan page: https://etherscan.io/token/0x282ee54f8ecda53d6bb77df4a4134738375a0664
+
 ## Contracts
 
 ### Mainnet    
